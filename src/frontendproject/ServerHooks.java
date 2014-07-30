@@ -37,8 +37,6 @@ public class ServerHooks
         return s;
     }
 
-    private final String FAIL = "failed";
-
     //enqueue stuff
     private final String ENQUEUE_COMMAND = "command";
     private final String[] ENQUEUE_COMMANDS =
@@ -57,34 +55,36 @@ public class ServerHooks
                 String queue, status, layer, shelf, desktop, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((layer = params.get("layer")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((shelf = params.get("shelf")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((desktop = params.get("desktop")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((effect = params.get("effect")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
-
+                int desktopInt = Integer.parseInt(desktop);
+                long id = Utils.getID();
+                cmdq.add(desktopInt, id, shelf);
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(id)));
+                return Utils.buildJSON(response);
 
             }
             else if (command.equals(ENQUEUE_COMMANDS[1]))//rep lyr
@@ -92,157 +92,157 @@ public class ServerHooks
                 String queue, status, layer, shelf, desktop, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((layer = params.get("layer")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((shelf = params.get("shelf")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((desktop = params.get("desktop")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((effect = params.get("effect")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
 
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[2]))//shw lyr
             {
                 String queue, status, shelf, desktop, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((shelf = params.get("shelf")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((desktop = params.get("desktop")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((effect = params.get("effect")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
 
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[3]))//emty dsktp
             {
                 String queue, status, desktop = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((desktop = params.get("desktop")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
 
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[4]))//shw sign
             {
                 String queue, status, layer, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((layer = params.get("layer")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((effect = params.get("effect")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
 
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[5]))//arm home
             {
                 String queue, status = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
 
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[6]))//arm calibr
             {
                 String queue, status = "";
                 if ((queue = params.get("queue")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 if ((status = params.get("status")) == null)
                 {
-                    return ServerHooksUtils.genericEnqueueFail();
+                    return Utils.genericEnqueueFail();
                 }
                 //no fails
 
                 //TODO - work
                 //response
-                response.add(new KVObj("id", ServerHooksUtils.getID()));
-                return ServerHooksUtils.buildJSON(response);
+                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                return Utils.buildJSON(response);
             }
             else//unknown command type
             {
-                return ServerHooksUtils.genericEnqueueFail();
+                return Utils.genericEnqueueFail();
             }
         }
         else
         {
-            return ServerHooksUtils.genericEnqueueFail();
+            return Utils.genericEnqueueFail();
         }
     }
 
@@ -259,12 +259,12 @@ public class ServerHooks
         //TODO - work
         if ((id = params.get(STATUS_ID)) != null)
         {
-            response.add(new KVObj(STATUS_STATUS, ServerHooksUtils.commandQueueStatusEnumToString(status)));
-            return ServerHooksUtils.buildJSON(response);
+            response.add(new KVObj(STATUS_STATUS, Utils.commandQueueStatusEnumToString(status)));
+            return Utils.buildJSON(response);
         }
         else
         {
-            return ServerHooksUtils.genericStatusFail();
+            return Utils.genericStatusFail();
         }
     }
 
@@ -303,7 +303,7 @@ public class ServerHooks
         }
 
         response.add(new KVObj(GET_VAR_VALUE, val));
-        return ServerHooksUtils.buildJSON(response);
+        return Utils.buildJSON(response);
     }
 
     private final String SET_VAR_VALUE = "value";

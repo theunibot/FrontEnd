@@ -32,7 +32,7 @@ public class CommandQueue
      *
      * @param s Command String
      */
-    public void add(int id, String s)
+    public void add(long id, String s)
     {
         queue.add(new QueueableItem(id, s));
     }

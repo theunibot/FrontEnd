@@ -28,6 +28,16 @@ public class CommandQueueWrapper
         return cw;
     }
 
+    private CommandQueueWrapper()
+    {
+        for (int i = 0; i < queues.length; i++)
+        {
+            queues[i] = new CommandQueue();
+        }
+    }
+    
+    
+
     private CommandQueue[] queues = new CommandQueue[3];
 
     /**
@@ -45,7 +55,7 @@ public class CommandQueueWrapper
      * @param id element id
      * @param s element content
      */
-    public void add(int queueIndex, int id, String s)
+    public void add(int queueIndex, long id, String s)
     {
         queues[queueIndex].add(id, s);
     }

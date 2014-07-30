@@ -6,14 +6,12 @@
 package frontendproject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  *
  * @author kyle
  */
-public class ServerHooksUtils
+public class Utils
 {
 
     private static long idItr = 0;
@@ -23,14 +21,14 @@ public class ServerHooksUtils
      *
      * @return 64 bit ID
      */
-    public static String getID()
+    public static long getID()
     {
         if (idItr == Long.MAX_VALUE - 1)//roll over instead of overflow
         {
             idItr = 0;
         }
         idItr++;
-        return String.valueOf(idItr - 1);
+        return idItr - 1;
     }
 
     /**
@@ -67,22 +65,22 @@ public class ServerHooksUtils
 
     public static String genericEnqueueFail()
     {
-        return ServerHooksUtils.genericEnqueueFail("Generic Enqueue Fail");
+        return Utils.genericEnqueueFail("Generic Enqueue Fail");
     }
 
     public static String genericEnqueueFail(String error)
     {
         response = new ArrayList<KVObj>();
-        response.add(new KVObj("id", ServerHooksUtils.getID()));
+        response.add(new KVObj("id", String.valueOf(Utils.getID())));
         response.add(new KVObj("error", error));
-        return ServerHooksUtils.buildJSON(response);
+        return Utils.buildJSON(response);
     }
 
     public static String genericStatusFail()
     {
         response = new ArrayList<KVObj>();
         response.add(new KVObj("status", "unknown"));
-        return ServerHooksUtils.buildJSON(response);
+        return Utils.buildJSON(response);
     }
 
     public static String buildJSON(ArrayList<KVObj> kvObjs)

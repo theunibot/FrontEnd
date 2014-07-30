@@ -13,10 +13,10 @@ package frontendproject;
 public class QueueableItem
 {
 
-    private int id;
+    private long id;
     private String content;
 
-    public QueueableItem(int id, String content)
+    public QueueableItem(long id, String content)
     {
         this.id = id;
         this.content = content;

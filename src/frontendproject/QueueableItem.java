@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package frontendproject;
-import nanohttpd.ServerRunner;
 
 /**
  *
  * @author kyle
  */
-public class MainClass 
+public class QueueableItem
 {
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
+
+    private int id;
+    private String content;
+
+    public QueueableItem(int id, String content)
     {
-        ServerRunner.run(WebServer.class);
+        this.id = id;
+        this.content = content;
     }
 
 }

@@ -21,7 +21,7 @@ public class ServerHooks
     private static ServerHooks s = null;
 
     //used in get/set vars calls
-    private Map<String, String> vars = Collections.synchronizedMap(new LinkedHashMap<String, String>());
+    private static Map<String, String> vars = Collections.synchronizedMap(new LinkedHashMap<String, String>());
 
     private CommandQueueWrapper cmdq = CommandQueueWrapper.getInstance();
 
@@ -247,7 +247,8 @@ public class ServerHooks
     }
 
     private final String STATUS_ID = "id";
-    private final String STATUS_STATUS = "status";
+    private final String STATUS_STATUS_KEY = "status";
+    private final String STATUS_ERROR_KEY = "error";
 
     public String status(Map<String, String> params)
     {
@@ -259,13 +260,13 @@ public class ServerHooks
         //TODO - work
         if ((id = params.get(STATUS_ID)) != null)
         {
-            response.add(new KVObj(STATUS_STATUS, Utils.commandQueueStatusEnumToString(status)));
-            return Utils.buildJSON(response);
+            response.add(new KVObj(STATUS_STATUS_KEY, Utils.commandQueueStatusEnumToString(status)));
         }
         else
         {
-            return Utils.genericStatusFail();
+            response.add(new KVObj(STATUS_ERROR_KEY, "error TBD"));
         }
+        return Utils.buildJSON(response);
     }
 
     private final String CLEAR_QUEUE_VALUE = "queue";
@@ -290,42 +291,63 @@ public class ServerHooks
         return "";//returns nothing
     }
 
-    private final String GET_VAR_VALUE = "value";
+    private final String GET_INPUT_VAL_KEY = "key";
+    private final String GET_RETURN_VAL_KEY = "\"value\"";
 
     public String getVar(Map<String, String> params)
     {
         response.clear();
-        String val = null;
+        String key = null;
 
-        if ((val = params.get(SET_VAR_KEY)) == null)
+        if ((key = params.get(GET_INPUT_VAL_KEY)) == null)//get the value of the key
         {
-            val = "";
+            System.out.println("Error, getVar key not found");
+        }
+        System.out.println("GET Printout: Key: " + key + " Value: " + vars.get(key));
+        String val;
+        if ((val = vars.get(key)) == null)//get value of the value
+        {
+            val = "\"\"";
+            System.out.println("Error, " + key +"\'s value not found");
+        }
+        else
+        {
+            val = "\"" + val + "\"";
         }
 
-        response.add(new KVObj(GET_VAR_VALUE, val));
+        response.add(new KVObj(GET_RETURN_VAL_KEY, val));
         return Utils.buildJSON(response);
     }
 
-    private final String SET_VAR_VALUE = "value";
-    private final String SET_VAR_KEY = "key";
+    private final String SET_VAR_READ_VAL_VALUE = "value";
+    private final String SET_VAR_READ_VAL_KEY = "key";
 
     public String setVar(Map<String, String> params)
     {
+
         response.clear();
-        String keyVal;
-        String valVal;
+        String key = null;
 
-        if ((keyVal = params.get(SET_VAR_KEY)) == null)
+        if ((key = params.get(SET_VAR_READ_VAL_KEY)) == null)//get the value of the key
         {
-            return "";
+            key = null;
+            System.out.println("Error, key not found");
         }
-        if ((valVal = params.get(SET_VAR_VALUE)) == null)
+        String val;
+        if ((val = params.get(SET_VAR_READ_VAL_VALUE)) == null)//get value of the value
         {
-            return "";
+            val = null;
+            System.out.println("Error, value not found");
         }
 
-        vars.put(keyVal, valVal);
+        if (key != null && val != null)
+        {
+            System.out.println("Wrt: key: " + key + " val: " + val);
+            vars.put(key, val);
+        }
+        
+        System.out.println("Wrt test Get Val: " + vars.get(key));
 
-        return "";//returns nothing
+        return "{}";//returns nothing
     }
 }

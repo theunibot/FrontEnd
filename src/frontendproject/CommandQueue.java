@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package frontendproject;
 
 import java.util.ArrayList;
@@ -24,7 +23,10 @@ public class CommandQueue
      */
     public void clear()
     {
-        queue.clear();
+        synchronized (queue)
+        {
+            queue.clear();
+        }
     }
 
     /**
@@ -34,7 +36,10 @@ public class CommandQueue
      */
     public void add(long id, String s)
     {
-        queue.add(new QueueableItem(id, s));
+        synchronized (queue)
+        {
+            queue.add(new QueueableItem(id, s));
+        }
     }
 
     /**
@@ -44,15 +49,22 @@ public class CommandQueue
      */
     public QueueableItem getFirst()
     {
-        if (queue.size() > 0)
+        synchronized (queue)
         {
-            return queue.get(0);
+            if (queue.size() > 0)
+            {
+                return queue.get(0);
+            }
+            return null;
         }
-        return null;
     }
 
     public QueueableItem getElement(int id)
     {
+        synchronized(queue)
+        {
+            
+        }
         return null;
     }
 

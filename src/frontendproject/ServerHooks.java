@@ -288,7 +288,7 @@ public class ServerHooks
             }
             cmdq.clear(intVal);
         }
-        return "";//returns nothing
+        return "{}";//returns nothing
     }
 
     private final String GET_INPUT_VAL_KEY = "key";
@@ -305,10 +305,14 @@ public class ServerHooks
         }
         System.out.println("GET Printout: Key: " + key + " Value: " + vars.get(key));
         String val;
-        if ((val = vars.get(key)) == null)//get value of the value
+        synchronized (vars)
+        {
+            val = vars.get(key);
+        }
+        if (val == null)//get value of the value
         {
             val = "\"\"";
-            System.out.println("Error, " + key +"\'s value not found");
+            System.out.println("Error, " + key + "\'s value not found");
         }
         else
         {
@@ -343,10 +347,15 @@ public class ServerHooks
         if (key != null && val != null)
         {
             System.out.println("Wrt: key: " + key + " val: " + val);
-            vars.put(key, val);
+            synchronized (vars)
+            {
+                vars.put(key, val);
+            }
         }
-        
-        System.out.println("Wrt test Get Val: " + vars.get(key));
+        synchronized (vars)
+        {
+            System.out.println("Wrt test Get Val: " + vars.get(key));
+        }
 
         return "{}";//returns nothing
     }

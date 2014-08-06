@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package frontendproject;
 
 /**
@@ -31,10 +30,9 @@ public class CommandQueueWrapper
             queues[i] = new CommandQueue();
         }
     }
-    
-    
 
     private CommandQueue[] queues = new CommandQueue[3];
+    private StatusQueue statusQueue = new StatusQueue();
 
     /**
      * Clear the command queue of the given num
@@ -45,15 +43,57 @@ public class CommandQueueWrapper
     }
 
     /**
-     * Adds an element to the given queue
+     * Adds an element to the given queue. Standard command not requiring a sign
+     * or desktop.
      *
      * @param queueIndex index of the queue to add to
      * @param id element id
-     * @param s element content
+     * @param content element content
+     * @param checkable if checkable with status
      */
-    public void add(int queueIndex, long id, String s)
+    public void add(int queueIndex, long id, String content, boolean checkable)
     {
-        queues[queueIndex].add(id, s);
+        queues[queueIndex].add(id, content);
+        if (checkable)
+        {
+            statusQueue.add(new StatusObject(id, CommandQueueStatus.PENDING));
+        }
+    }
+
+    /**
+     * Adds an element to the given queue. Standard command not requiring a sign
+     * or desktop.
+     *
+     * @param queueIndex index of the queue to add to
+     * @param id element id
+     * @param content element content
+     * @param checkable if checkable with status
+     */
+    public void add(int queueIndex, long id, EnumShelfUnit desktop, int desktopShelf, String content, boolean checkable)
+    {
+        queues[queueIndex].add(id, desktop, desktopShelf, content);//add(id, desktop, e);
+        if (checkable)
+        {
+            statusQueue.add(new StatusObject(id, CommandQueueStatus.PENDING));
+        }
+    }
+    
+    public void add(int queueIndex, long id, EnumShelfUnit desktop, int desktopShelf, int layer, EffectType e, boolean checkable)
+    {
+        queues[queueIndex].add(id, desktop, desktopShelf, layer, e);//(id, desktop, desktopShelf, content);//add(id, desktop, e);
+        if (checkable)
+        {
+            statusQueue.add(new StatusObject(id, CommandQueueStatus.PENDING));
+        }
+    }
+    
+    public void add(int queueIndex, long id, EnumShelfUnit desktop, String content, boolean checkable)
+    {
+        queues[queueIndex].add(id, desktop, content);//add(id, desktop, e);
+        if (checkable)
+        {
+            statusQueue.add(new StatusObject(id, CommandQueueStatus.PENDING));
+        }
     }
 
     /**
@@ -66,4 +106,3 @@ public class CommandQueueWrapper
         return queues[index].getFirst();
     }
 }
-

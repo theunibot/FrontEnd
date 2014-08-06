@@ -60,7 +60,37 @@ public class Utils
             return null;
         }
     }
+    
+    public static EffectType effectStringToEffectType(String s)
+    {
+        if (s.equals("fancy"))
+        {
+            return EffectType.FANCY;
+        }
+        else if (s.equals("efficient"))
+        {
+            return EffectType.EFFICIENT;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
+    public static EnumShelfUnit stringToEnumShelfUnit(String s)
+    {
+        if(s.trim().equals("1"))
+        {
+            return EnumShelfUnit.D1;
+        }
+        else if(s.trim().equals("2"))
+        {
+            return EnumShelfUnit.D2;
+        }
+        return null;
+    }
+    
+    
     private static ArrayList<KVObj> response;
 
     public static String genericEnqueueFail()
@@ -91,7 +121,10 @@ public class Utils
         for (int i = 0; i < kvObjs.size() - 1; i++)//all but last set of vals
         {
             kvObj = kvObjs.get(i);
-            b.append(kvObj.getKey() + ":" + kvObj.getValue() + ",");
+            if (kvObj != null)
+            {
+                b.append(kvObj.getKey() + ":" + kvObj.getValue() + ",");
+            }
         }
         kvObj = kvObjs.get(kvObjs.size() - 1);
         b.append(kvObj.getKey() + ":" + kvObj.getValue() + "}");

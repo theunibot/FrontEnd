@@ -41,8 +41,10 @@ public class ServerHooks
     private final String ENQUEUE_COMMAND = "command";
     private final String[] ENQUEUE_COMMANDS =
     {
-        "mount-layer", "replace-layer", "show-layer", "empty-desktop", "show-sign", "arm-home", "arm-calibrate"
-    };
+        "mount-layer", "replace-layer", "show-layer", "empty-desktop", "show-sign", "arm-home", "arm-calibrate", "arm-energize", "arm-de-energize"
+    };    
+
+    private volatile boolean errorState = false;
 
     public String enqueue(Map<String, String> params)
     {
@@ -50,14 +52,15 @@ public class ServerHooks
         String command = "";
         if ((command = params.get(ENQUEUE_COMMAND)) != null)
         {
-            if (command.equals(ENQUEUE_COMMANDS[0]))//mnt lyr
+            command = command.toLowerCase();//convert the command to lowercase, case doesn't matter
+            if (command.equals(ENQUEUE_COMMANDS[0]) && !errorState)//mnt lyr
             {
-                String queue, status, layer, shelf, desktop, effect = "";
+                String queue, checkableStr, layer, shelf, desktop, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
@@ -78,23 +81,28 @@ public class ServerHooks
                     return Utils.genericEnqueueFail();
                 }
                 //no fails
-                int desktopInt = Integer.parseInt(desktop);
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
                 long id = Utils.getID();
-                cmdq.add(desktopInt, id, shelf);
-                //TODO - work
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, Utils.stringToEnumShelfUnit(shelf), Integer.parseInt(shelf), Integer.parseInt(layer), Utils.effectStringToEffectType(effect) , checkable);
+                
                 //response
                 response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
 
             }
-            else if (command.equals(ENQUEUE_COMMANDS[1]))//rep lyr
+            else if (command.equals(ENQUEUE_COMMANDS[1]) && !errorState)//rep lyr
             {
-                String queue, status, layer, shelf, desktop, effect = "";
+                String queue, checkableStr, layer, shelf, desktop, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
@@ -115,20 +123,27 @@ public class ServerHooks
                     return Utils.genericEnqueueFail();
                 }
                 //no fails
-
-                //TODO - work
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+//                int queueint = Integer.parseInt(queue);
+//                cmdq.add(queueint, id, Utils.stringToEnumShelfUnit(shelf), Integer.parseInt(shelf), "shake", checkable);
+                
                 //response
-                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
             }
-            else if (command.equals(ENQUEUE_COMMANDS[2]))//shw lyr
+            else if (command.equals(ENQUEUE_COMMANDS[2]) && !errorState)//shw lyr
             {
-                String queue, status, shelf, desktop, effect = "";
+                String queue, checkableStr, shelf, desktop, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
@@ -146,19 +161,28 @@ public class ServerHooks
                 }
                 //no fails
 
-                //TODO - work
+                //no fails
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, Utils.stringToEnumShelfUnit(shelf), Integer.parseInt(shelf), "shake", checkable);
+                
                 //response
-                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
             }
-            else if (command.equals(ENQUEUE_COMMANDS[3]))//emty dsktp
+            else if (command.equals(ENQUEUE_COMMANDS[3]) && !errorState)//emty dsktp
             {
-                String queue, status, desktop = "";
+                String queue, checkableStr, desktop = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
@@ -167,20 +191,27 @@ public class ServerHooks
                     return Utils.genericEnqueueFail();
                 }
                 //no fails
-
-                //TODO - work
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, Utils.stringToEnumShelfUnit(desktop), "clear", checkable);
+                
                 //response
-                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
             }
-            else if (command.equals(ENQUEUE_COMMANDS[4]))//shw sign
+            else if (command.equals(ENQUEUE_COMMANDS[4]) && !errorState)//shw sign
             {
-                String queue, status, layer, effect = "";
+                String queue, checkableStr, layer, effect = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
@@ -193,46 +224,116 @@ public class ServerHooks
                     return Utils.genericEnqueueFail();
                 }
                 //no fails
-
-                //TODO - work
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                
+//                cmdq.add(queueint, id, command, checkable);
+                //TODO
+                
+                
                 //response
-                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[5]))//arm home
             {
-                String queue, status = "";
+                String queue, checkableStr = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                //no fails
-
-                //TODO - work
+                
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, "home", checkable);                
                 //response
-                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
             }
             else if (command.equals(ENQUEUE_COMMANDS[6]))//arm calibr
             {
-                String queue, status = "";
+                String queue, checkableStr = "";
                 if ((queue = params.get("queue")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                if ((status = params.get("status")) == null)
+                if ((checkableStr = params.get("status")) == null)
                 {
                     return Utils.genericEnqueueFail();
                 }
-                //no fails
-
-                //TODO - work
+                
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, "calibrate", checkable);                
                 //response
-                response.add(new KVObj("id", String.valueOf(Utils.getID())));
+                response.add(new KVObj("id", String.valueOf(id)));
+                return Utils.buildJSON(response);
+            }
+            else if (command.equals(ENQUEUE_COMMANDS[7]))//energize
+            {
+                String queue, checkableStr = "";
+                if ((queue = params.get("queue")) == null)
+                {
+                    return Utils.genericEnqueueFail();
+                }
+                if ((checkableStr = params.get("status")) == null)
+                {
+                    return Utils.genericEnqueueFail();
+                }
+                
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, "energize", checkable);                
+                //response
+                response.add(new KVObj("id", String.valueOf(id)));
+                return Utils.buildJSON(response);
+            }
+            else if (command.equals(ENQUEUE_COMMANDS[8]))//de-energize
+            {
+                String queue, checkableStr = "";
+                if ((queue = params.get("queue")) == null)
+                {
+                    return Utils.genericEnqueueFail();
+                }
+                if ((checkableStr = params.get("status")) == null)
+                {
+                    return Utils.genericEnqueueFail();
+                }
+                boolean checkable = false;
+                if (Integer.parseInt(checkableStr) == 1)
+                {
+                    checkable = true;
+                }
+                long id = Utils.getID();
+                int queueint = Integer.parseInt(queue);
+                cmdq.add(queueint, id, "de-energize", checkable);
+                
+                //response
+                response.add(new KVObj("id", String.valueOf(id)));
                 return Utils.buildJSON(response);
             }
             else//unknown command type
@@ -246,8 +347,8 @@ public class ServerHooks
         }
     }
 
-    private final String STATUS_ID = "id";
-    private final String STATUS_STATUS_KEY = "status";
+    private final String STATUS_ID_KEY = "id";
+    private final String STATUS_RETURN_STATUS_KEY = "status";
     private final String STATUS_ERROR_KEY = "error";
 
     public String status(Map<String, String> params)
@@ -258,9 +359,9 @@ public class ServerHooks
         CommandQueueStatus status = CommandQueueStatus.UNKNOWN;
 
         //TODO - work
-        if ((id = params.get(STATUS_ID)) != null)
+        if ((id = params.get(STATUS_ID_KEY)) != null)
         {
-            response.add(new KVObj(STATUS_STATUS_KEY, Utils.commandQueueStatusEnumToString(status)));
+            response.add(new KVObj(STATUS_RETURN_STATUS_KEY, Utils.commandQueueStatusEnumToString(status)));
         }
         else
         {
@@ -269,13 +370,13 @@ public class ServerHooks
         return Utils.buildJSON(response);
     }
 
-    private final String CLEAR_QUEUE_VALUE = "queue";
+    private final String CLEAR_QUEUE_ID_KEY = "queue";
 
     public String clearQueue(Map<String, String> params)
     {
         response.clear();
         String strVal = null;
-        if ((strVal = params.get(CLEAR_QUEUE_VALUE)) == null)
+        if ((strVal = params.get(CLEAR_QUEUE_ID_KEY)) == null)
         {
             int intVal = -1;
             try
@@ -284,9 +385,12 @@ public class ServerHooks
             }
             catch (NumberFormatException ignored)
             {
-                return "";//fail, return nothing
             }
-            cmdq.clear(intVal);
+            //if value is legit
+            if (intVal != -1)
+            {
+                cmdq.clear(intVal);
+            }
         }
         return "{}";//returns nothing
     }

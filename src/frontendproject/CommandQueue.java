@@ -42,6 +42,39 @@ public class CommandQueue
         }
     }
 
+    public void add(long id, EnumShelfUnit desktop, String content)
+    {
+        synchronized (queue)
+        {
+            queue.add(new QueueableItem(id, desktop, content));
+        }
+    }
+    
+    public void add(long id, EnumShelfUnit desktop, int desktopShelf, String content)
+    {
+        synchronized (queue)
+        {
+            queue.add(new QueueableItem(id, desktop, desktopShelf, content));
+        }
+    }
+    
+    /**
+     * Add a move command to the queue
+     *
+     * @param id
+     * @param desktop
+     * @param desktopShelf 
+     * @param layer
+     * @param e
+     */
+    public void add(long id, EnumShelfUnit desktop, int desktopShelf, int layer, EffectType e)
+    {
+        synchronized (queue)
+        {
+            queue.add(new QueueableItem(id, desktop, desktopShelf, layer, e));
+        }
+    }
+
     /**
      * Gets the first command in the list
      *
@@ -61,9 +94,9 @@ public class CommandQueue
 
     public QueueableItem getElement(int id)
     {
-        synchronized(queue)
+        synchronized (queue)
         {
-            
+
         }
         return null;
     }
